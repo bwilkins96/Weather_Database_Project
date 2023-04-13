@@ -68,3 +68,37 @@ CREATE TABLE WindReads (
 	Direction varchar(2) NOT NULL,
 	ReadingID int REFERENCES Readings( ReadingID )
 );
+GO
+
+/*******************************************************************
+               Inserts test data into the database
+*******************************************************************/
+
+INSERT INTO WeatherStations VALUES 
+	('Dornestic', 'Pittsburgh', 'PA', '12345'),
+	('Scenic Way', 'Pittsburgh', 'PA', '12345'),
+	('Strawberry Ave', 'Pittsburgh', 'PA', '12345');
+
+INSERT INTO Recorders VALUES
+	('Temp', 1, '12.12345, 20.20202'),
+	('Precip', 1, '20.20202, 12.12345'),
+	('Wind', 1, '67.89101, 51.50505'),
+	('Temp', 0, '51.50505, 67.89101');
+
+INSERT INTO HomeStations VALUES 
+	(1, 4), (2, 3), (3, 2), (3, 1);
+
+INSERT INTO Readings VALUES
+	(GETDATE(), 1), (GETDATE(), 4),
+	(GETDATE(), 2), (GETDATE(), 2),
+	(GETDATE(), 3), (GETDATE(), 3);
+
+INSERT INTO TemperatureReads VALUES 
+	(80.5, 'F', 1), (18.35, 'C', 2);
+	
+INSERT INTO PrecipitationReads VALUES
+	(5, 'inch', 'rain', 10, 3),
+	(10, 'inch', 'snow', 4, 4);
+
+INSERT INTO WindReads VALUES
+	(5, 'M', 'SW', 5), (15, 'K', 'N', 6);
