@@ -1,6 +1,6 @@
 -- BDAT 605: Database Principles
 -- Maryville University
--- Benjamin Wilkins, 4/13/2023
+-- Benjamin Wilkins, 4/13/2023, UPDATED: 4/22/2023
 
 /*******************************************************************
 Creates the Weather database and tables for the final course project
@@ -91,10 +91,12 @@ INSERT INTO HomeStations VALUES
 INSERT INTO Readings VALUES
 	(GETDATE(), 1), (GETDATE(), 4),
 	(GETDATE(), 2), (GETDATE(), 2),
-	(GETDATE(), 3), (GETDATE(), 3);
+	(GETDATE(), 3), (GETDATE(), 3),
+	(GETDATE(), 1), (GETDATE(), 4);
 
 INSERT INTO TemperatureReads VALUES 
-	(80.5, 'F', 1), (18.35, 'C', 2);
+	(80.5, 'F', 1), (18.35, 'C', 2),
+	(90.25, 'F', 7), (14.5, 'C', 8);
 	
 INSERT INTO PrecipitationReads VALUES
 	(5, 'inch', 'rain', 10, 3),
