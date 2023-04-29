@@ -1,6 +1,6 @@
 -- BDAT 605: Database Principles
 -- Maryville University
--- Benjamin Wilkins, 4/22/2023
+-- Benjamin Wilkins, 4/22/2023, UPDATED: 4/29/2023
 
 /***************************************************************************
 Weather database queries, views, and procedures for the final course project
@@ -31,12 +31,16 @@ GO
 
 
 /*  Views  */
+
+-- View of WeatherStations table
 CREATE OR ALTER VIEW WeatherStations_View
 AS
 SELECT StationID, Street + ', ' + City + ', ' + State + ' ' + Zip AS Address
 FROM WeatherStations;
 GO
 
+-- View of Recorders table
+-- Uses a union to return OnSite values as 'true' or 'false', as opposed to 1 or 0
 CREATE OR ALTER VIEW Recorders_View
 AS
 	SELECT RecorderID, Type, 'true' AS Onsite, Coords
@@ -48,24 +52,31 @@ UNION
 	WHERE Onsite = 0;
 GO
 
+-- View of readings table
 CREATE OR ALTER VIEW Reading_View
 AS
 SELECT ReadingID, RecorderID, DateTime AS DateOfRead
 FROM Readings;
 GO
 
+-- View of PrecipitationReads table
+-- Combines amount and meaurement type to display formatted precipitation measurement
 CREATE OR ALTER VIEW Precip_View
 AS
 SELECT ReadingID, CAST(Amount AS varchar(10)) + ' ' + MeasurmentType AS Amount, TimePeriodInHours AS Hours 
 FROM PrecipitationReads;
 GO
 
+-- View of TemperatureReads table
+-- Combines temp and degree type to display formatted temperature measurement
 CREATE OR ALTER VIEW Temp_View
 AS
 SELECT ReadingID, CAST(Temp AS varchar(10)) + ' ' + DegreeType AS Temp
 FROM TemperatureReads;
 GO
 
+-- View of WindReads table
+-- Combines speed and miles/kilometers per hour to display formatted wind measurement
 CREATE OR ALTER VIEW Wind_View
 AS
 SELECT ReadingID, CAST(Speed AS varchar(10)) + ' ' + MilesOrKilometers + 'PH' AS Speed, Direction
@@ -73,6 +84,8 @@ FROM WindReads;
 GO
 
 -- View that joins HomeStations with WeatherStations and Recorders
+-- Returns info about recorders and their home stations
+-- Uses a union to return RecorderOnSite values as 'true' or 'false', as opposed to 1 or 0
 CREATE OR ALTER VIEW HomeStations_View
 AS
 	SELECT Recorders.RecorderID, Type AS RecorderType, 'true' AS RecorderOnSite, Coords AS RecorderCoords,
