@@ -1,6 +1,6 @@
 -- BDAT 605: Database Principles
 -- Maryville University
--- Benjamin Wilkins, 4/13/2023, UPDATED: 4/22/2023
+-- Benjamin Wilkins, 4/13/2023, UPDATED: 5/01/2023
 
 /*******************************************************************
 Creates the Weather database and tables for the final course project
@@ -55,7 +55,7 @@ CREATE TABLE TemperatureReads (
 CREATE TABLE PrecipitationReads (
 	PrecipID int PRIMARY KEY IDENTITY,
 	Amount decimal(10,4) NOT NULL,
-	MeasurmentType varchar(15) NOT NULL,
+	MeasurementType varchar(15) NOT NULL,
 	PrecipType varchar(25) NOT NULL,
 	TimePeriodInHours decimal(10,4),
 	ReadingID int REFERENCES Readings( ReadingID )

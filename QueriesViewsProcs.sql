@@ -1,6 +1,6 @@
 -- BDAT 605: Database Principles
 -- Maryville University
--- Benjamin Wilkins, 4/22/2023, UPDATED: 4/29/2023
+-- Benjamin Wilkins, 4/22/2023, UPDATED: 5/01/2023
 
 /***************************************************************************
 Weather database queries, views, and procedures for the final course project
@@ -18,14 +18,14 @@ FROM TemperatureReads JOIN Readings
 ORDER BY DegreeType DESC, ReadingID;
 
 
--- Returns total amount of rainfall, hours of rainfall, the average rainfall per hour,
--- a count of the number of readings and recorders used, grouped by measurement type
-SELECT MeasurmentType, SUM(Amount) AS TotalRainFall, SUM(TimePeriodInHours) AS TotalHours,
-	   (SUM(Amount) / SUM(TimePeriodInHours)) AS AvgRainPerHour, 
+-- Returns total amount of precipitation, hours of precipitation, the average precipitation per hour,
+-- a count of the number of readings, and recorders used, grouped by measurement type
+SELECT MeasurementType, SUM(Amount) AS TotalPrecip, SUM(TimePeriodInHours) AS TotalHours,
+	   (SUM(Amount) / SUM(TimePeriodInHours)) AS AvgPrecipPerHour, 
 	   COUNT(DISTINCT Readings.ReadingID) AS TotalReadings, COUNT(DISTINCT RecorderID) AS NumRecorders
 FROM PrecipitationReads JOIN Readings
 	ON PrecipitationReads.ReadingID = Readings.ReadingID
-GROUP BY MeasurmentType
+GROUP BY MeasurementType
 HAVING SUM(Amount) >= 15;
 GO
 
@@ -63,7 +63,8 @@ GO
 -- Combines amount and meaurement type to display formatted precipitation measurement
 CREATE OR ALTER VIEW Precip_View
 AS
-SELECT ReadingID, CAST(Amount AS varchar(10)) + ' ' + MeasurmentType AS Amount, TimePeriodInHours AS Hours 
+SELECT ReadingID, CAST(Amount AS varchar(10)) + ' ' + MeasurementType AS Amount, 
+	   PrecipType AS Type, TimePeriodInHours AS Hours 
 FROM PrecipitationReads;
 GO
 
