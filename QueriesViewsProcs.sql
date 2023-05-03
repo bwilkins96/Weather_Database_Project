@@ -152,6 +152,18 @@ BEGIN
 END
 GO
 
+-- Returns data about max temperature reading, using the ConvertTemp function
+CREATE OR ALTER PROCEDURE sp_GetHottestRead
+AS
+	SELECT Readings.ReadingID, CAST(Temp AS varchar(10)) + ' ' + DegreeType AS MaxTemp, Coords, DateTime
+	FROM TemperatureReads JOIN Readings
+		ON TemperatureReads.ReadingID = Readings.ReadingID
+	JOIN Recorders
+		ON Readings.RecorderID = Recorders.RecorderID
+	WHERE dbo.ConvertTemp(Temp, DegreeType, 'C') = (SELECT Max(dbo.ConvertTemp(Temp, DegreeType, 'C'))
+													FROM TemperatureReads);
+GO
+
 
 -- Uncomment below for testing
 /*
@@ -171,5 +183,7 @@ SELECT * FROM HomeStations_View;
 
 EXEC sp_GetHottestReadData;
 
-SELECT dbo.ConvertTemp(30.25, 'C', 'F');
+SELECT dbo.ConvertTemp(30.25, 'C', 'F') AS Result;  -- 86.4500
+
+EXEC sp_GetHottestRead
 */
