@@ -1,6 +1,6 @@
 -- BDAT 605: Database Principles
 -- Maryville University
--- Benjamin Wilkins, 4/22/2023, UPDATED: 5/01/2023
+-- Benjamin Wilkins, 4/22/2023, UPDATED: 5/03/2023
 
 /***************************************************************************
 Weather database queries, views, and procedures for the final course project
@@ -107,7 +107,7 @@ UNION
 GO
 
 
-/*  Procedures  */
+/*  Procedures / Functions  */
 
 -- Returns data about max temperature readings, grouped by degree type
 CREATE OR ALTER PROCEDURE sp_GetHottestReadData
@@ -120,6 +120,36 @@ AS
 	WHERE Temp in (SELECT Max(Temp)
 				   FROM TemperatureReads
 				   GROUP BY DegreeType);
+GO
+
+-- Returns @Temp converted from @From to @To degrees
+-- i.e. dbo.ConvertTemp(30.25, 'C', 'F') = 86.45 (in degrees fahrenheit)
+CREATE OR ALTER FUNCTION ConvertTemp (@Temp decimal(10,4), @From char(1), @To char(1))
+	RETURNS decimal(10,4)
+BEGIN
+	IF @From = @To                      
+	-- attempting to convert between same degree type
+		RETURN @Temp;
+
+	DECLARE @NewTemp decimal(10,4)
+
+	IF @From = 'C' and @To = 'K'
+		SET @NewTemp = @Temp + 273.15;
+	IF @From = 'K' and @To = 'C'
+		SET @NewTemp = @Temp - 273.15;
+
+	IF @From = 'F' and @To = 'C'
+		SET @NewTemp = (5.0/9.0) * (@Temp - 32);
+	IF @From = 'C' and @To = 'F'
+		SET @NewTemp = (9.0/5.0 * @Temp) + 32;
+
+	IF @From = 'K' and @To = 'F'
+		SET @NewTemp = (9.0/5.0 * (@Temp - 273.15)) + 32;
+	IF @From = 'F' and @To = 'K'
+		SET @NewTemp = ((5.0/9.0) * (@Temp - 32)) + 273.15;
+
+	RETURN @NewTemp;
+END
 GO
 
 
@@ -140,4 +170,6 @@ SELECT * FROM Wind_View;
 SELECT * FROM HomeStations_View;
 
 EXEC sp_GetHottestReadData;
+
+SELECT dbo.ConvertTemp(30.25, 'C', 'F');
 */
