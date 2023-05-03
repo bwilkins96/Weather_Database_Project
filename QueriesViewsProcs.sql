@@ -185,5 +185,5 @@ EXEC sp_GetHottestReadData;
 
 SELECT dbo.ConvertTemp(30.25, 'C', 'F') AS Result;  -- 86.4500
 
-EXEC sp_GetHottestRead
+EXEC sp_GetHottestRead;
 */
